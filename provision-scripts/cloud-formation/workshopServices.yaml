@@ -149,9 +149,9 @@ Resources:
             - " DT_BASEURL=\"$(echo ${DT_BASEURL%?})\"; "
             - "fi\n"
             - "sudo wget -O Dynatrace-OneAgent.sh "
-            - " --header=Authorization: Api-Token "
+            - " --header=\"Authorization: Api-Token "
             - !Ref 'DynatracePaasToken'
-            - "\" ${DT_BASEURL}/api/v1/deployment/installer/agent/unix/default/latest?"
+            - "\" \"${DT_BASEURL}/api/v1/deployment/installer/agent/unix/default/latest?"
             - "&arch=x86&flavor=default\"\n"
             - "sudo chmod 777 Dynatrace-OneAgent.sh\n"
             - "sudo /bin/sh Dynatrace-OneAgent.sh"
