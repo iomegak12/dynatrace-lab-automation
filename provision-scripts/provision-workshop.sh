@@ -2,6 +2,7 @@
 
 DT_BASEURL=$1
 DT_API_TOKEN=$2
+DT_PAAS_TOKEN=$4
 DASHBOARD_OWNER_EMAIL=$3  # required is making monaco dashboards SETUP_TYPE=all.  
                           # Otherwise optional or any "dummy" value if you need to pass
                           # in SETUP_TYPE and KEYPAIR_NAME parameters
@@ -17,6 +18,11 @@ fi
 
 if [ -z $DT_API_TOKEN ]; then
   echo "ABORT: missing DT_API_TOKEN parameter"
+  exit 1
+fi
+
+if [ -z $DT_PAAS_TOKEN ]; then
+  echo "ABORT: missing DT_PAAS_TOKEN parameter"
   exit 1
 fi
 
@@ -43,6 +49,7 @@ make_creds_file() {
   sed 's~HOSTNAME_MONOLITH_PLACEHOLDER~'"$HOSTNAME_MONOLITH"'~' | \
   sed 's~HOSTNAME_SERVICES_PLACEHOLDER~'"$HOSTNAME_SERVICES"'~' | \
   sed 's~CLUSTER_NAME_PLACEHOLDER~'"$CLUSTER_NAME"'~' | \
+  sed 's~DT_PAAS_TOKEN_PLACEHOLDER~'"$DT_PAAS_TOKEN"'~' | \
   sed 's~DT_API_TOKEN_PLACEHOLDER~'"$DT_API_TOKEN"'~' > $CREDS_FILE
 
 }
@@ -78,7 +85,7 @@ create_aws_monolith-vm() {
       --stack-name "monolith-vm-$(date +%s)" \
       --template-body file://cloud-formation/workshopMonolith.yaml \
       --parameters ParameterKey=DynatraceBaseURL,ParameterValue=$DT_BASEURL \
-        ParameterKey=DynatracePaasToken,ParameterValue=$DT_API_TOKEN \
+        ParameterKey=DynatracePaasToken,ParameterValue=$DT_PAAS_TOKEN \
         ParameterKey=KeyPairName,ParameterValue=$KEYPAIR_NAME \
         ParameterKey=AvailabilityZone,ParameterValue=$AVAILABILITY_ZONE
 }
@@ -90,7 +97,7 @@ create_aws_services-vm() {
       --stack-name "services-vm-$(date +%s)" \
       --template-body file://cloud-formation/workshopServices.yaml \
       --parameters ParameterKey=DynatraceBaseURL,ParameterValue=$DT_BASEURL \
-        ParameterKey=DynatracePaasToken,ParameterValue=$DT_API_TOKEN \
+        ParameterKey=DynatracePaasToken,ParameterValue=$DT_PAAS_TOKEN \
         ParameterKey=ResourcePrefix,ParameterValue="" \
         ParameterKey=KeyPairName,ParameterValue=$KEYPAIR_NAME \
         ParameterKey=AvailabilityZone,ParameterValue=$AVAILABILITY_ZONE

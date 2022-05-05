@@ -148,17 +148,18 @@ Resources:
             - "if [ \"${DT_BASEURL: -1}\" == \"/\" ]; then"
             - " DT_BASEURL=\"$(echo ${DT_BASEURL%?})\"; "
             - "fi\n"
-            - wget -O Dynatrace-OneAgent.sh "
-            - ${DT_BASEURL}/api/v1/deployment/installer/agent/unix/default/latest?Api-Token=
+            - "sudo wget -O Dynatrace-OneAgent.sh "
+            - " --header=Authorization: Api-Token "
             - !Ref 'DynatracePaasToken'
+            - " ${DT_BASEURL}/api/v1/deployment/installer/agent/unix/default/latest?"
             - "&arch=x86&flavor=default\"\n"
-            - "/bin/sh Dynatrace-OneAgent.sh"
+            - "sudo /bin/sh Dynatrace-OneAgent.sh"
             - " --set-app-log-content-access=true"
             - " --set-infra-only=false"
             - " --set-host-name="
-            - !If [HasResourcePrefix, !Sub "${ResourcePrefix}-dt-orders-services", dt-orders-services]
+            - !If [HasResourcePrefix, !Sub "${ResourcePrefix}-dt-orders-monolith", dt-orders-monolith]
             - " --set-host-group="
-            - !If [HasResourcePrefix, !Sub "${ResourcePrefix}-dt-orders-services", dt-orders-services]
+            - !If [HasResourcePrefix, !Sub "${ResourcePrefix}-dt-orders-monolith", dt-orders-monolith]
             - "\n"            
             - "sudo apt-get update\n"
             - "sudo apt-get install -y git\n"

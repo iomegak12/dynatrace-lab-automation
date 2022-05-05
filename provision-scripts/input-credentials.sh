@@ -10,6 +10,7 @@ if [ -f "$CREDS_FILE" ]
 then
     DT_BASEURL=$(cat $CREDS_FILE | jq -r '.DT_BASEURL')
     DT_API_TOKEN=$(cat $CREDS_FILE | jq -r '.DT_API_TOKEN')
+    DT_PAAS_TOKEN=$(cat $CREDS_FILE | jq -r '.DT_PAAS_TOKEN')
     HOSTNAME_MONOLITH=$(cat $CREDS_FILE | jq -r '.HOSTNAME_MONOLITH')
     HOSTNAME_SERVICES=$(cat $CREDS_FILE | jq -r '.HOSTNAME_SERVICES')
     CLUSTER_NAME=$(cat $CREDS_FILE | jq -r '.CLUSTER_NAME')
@@ -28,6 +29,7 @@ echo "==================================================================="
 echo    "Dynatrace Base URL - example https://ABC.live.dynatrace.com"
 read -p "                         (current: $DT_BASEURL) : " DT_BASEURL_NEW
 read -p "Dynatrace API Token      (current: $DT_API_TOKEN) : " DT_API_TOKEN_NEW
+read -p "Dynatrace PASS Token      (current: $DT_PAAS_TOKEN) : " DT_PAAS_TOKEN_NEW
 echo "==================================================================="
 echo "ONLY adjust these IF you added a PREFIX CloudFormation stack parameter"
 echo "==================================================================="
@@ -40,6 +42,7 @@ echo ""
 # set value to new input or default to current value
 DT_BASEURL=${DT_BASEURL_NEW:-$DT_BASEURL}
 DT_API_TOKEN=${DT_API_TOKEN_NEW:-$DT_API_TOKEN}
+DT_PAAS_TOKEN=${DT_PAAS_TOKEN_NEW:-$DT_PAAS_TOKEN}
 HOSTNAME_MONOLITH=${HOSTNAME_MONOLITH_NEW:-$HOSTNAME_MONOLITH}
 HOSTNAME_SERVICES=${HOSTNAME_SERVICES_NEW:-$HOSTNAME_SERVICES}
 CLUSTER_NAME=${CLUSTER_NAME_NEW:-$CLUSTER_NAME}
@@ -54,6 +57,7 @@ echo -e "Please confirm all are correct:"
 echo "--------------------------------------------------"
 echo "Dynatrace Base URL       : $DT_BASEURL"
 echo "Dynatrace API Token      : $DT_API_TOKEN"
+echo "Dynatrace PAAS Token      : $DT_PAAS_TOKEN"
 echo "--------------------------------------------------"
 echo "Monolith Host Name       : $HOSTNAME_MONOLITH"
 echo "Services Host Name       : $HOSTNAME_SERVICES"
@@ -73,6 +77,7 @@ cat $CREDS_TEMPLATE_FILE | \
   sed 's~HOSTNAME_MONOLITH_PLACEHOLDER~'"$HOSTNAME_MONOLITH"'~' | \
   sed 's~HOSTNAME_SERVICES_PLACEHOLDER~'"$HOSTNAME_SERVICES"'~' | \
   sed 's~CLUSTER_NAME_PLACEHOLDER~'"$CLUSTER_NAME"'~' | \
+  sed 's~DT_PAAS_TOKEN_PLACEHOLDER~'"$DT_PAAS_TOKEN"'~' | \
   sed 's~DT_API_TOKEN_PLACEHOLDER~'"$DT_API_TOKEN"'~' > $CREDS_FILE
 
 echo "Saved credential to: $CREDS_FILE"
