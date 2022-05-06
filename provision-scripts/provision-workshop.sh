@@ -6,9 +6,9 @@ DT_PAAS_TOKEN=$4
 DASHBOARD_OWNER_EMAIL=$3  # required is making monaco dashboards SETUP_TYPE=all.  
                           # Otherwise optional or any "dummy" value if you need to pass
                           # in SETUP_TYPE and KEYPAIR_NAME parameters
-SETUP_TYPE=$4             # optional argument. values are: all, monolith-vm, services-vm.  default is all
+SETUP_TYPE=$5             # optional argument. values are: all, monolith-vm, services-vm.  default is all
                           # this allows to just recreate the cloudformation stack is one VM stack fails
-KEYPAIR_NAME=$5           # optional argument. if leave blank it will default to ee-default-keypair
+KEYPAIR_NAME=$6           # optional argument. if leave blank it will default to ee-default-keypair
                           # this allows to override for testing outside of AWS event engine account
 
 if [ -z $DT_BASEURL ]; then
