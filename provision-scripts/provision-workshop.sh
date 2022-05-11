@@ -67,6 +67,8 @@ setup_workshop_config() {
 get_availability_zone() {
 
   MY_REGION=$(aws ec2 describe-availability-zones --output text --query 'AvailabilityZones[0].[RegionName]') 
+  echo 'Current Region $MY_REGION ...'
+  
   INSTANCE_TYPE=m5.xlarge
   AVAILABILITY_ZONE=$(aws ec2 describe-instance-type-offerings --region $MY_REGION --location-type "availability-zone" --filters Name=instance-type,Values=$INSTANCE_TYPE | jq -r '.InstanceTypeOfferings[0].Location')
 
